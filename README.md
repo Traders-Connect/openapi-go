@@ -1,4 +1,4 @@
-# cTrader OpenAPI Go Client
+# CTrader OpenAPI Client In Go
 
 A client library to work with cTrader's OpenAPI proxy servers.
 
