@@ -4,7 +4,7 @@ import "unsafe"
 
 func ToByteArray(num int) []byte {
 	size := 4
-	arr := make([]byte, 4)
+	arr := make([]byte, size)
 	for i := 0; i < size; i++ {
 		byt := *(*uint8)(unsafe.Pointer(uintptr(unsafe.Pointer(&num)) + uintptr(i)))
 		arr[i] = byt
