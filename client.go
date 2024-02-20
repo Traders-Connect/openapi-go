@@ -16,9 +16,9 @@ type IClient interface {
 	SendMessage(m []byte) error
 	// On "message" | "end", EventHandler
 	On(string, EventHandler)
+	OnGeneric(string, EventHandlerGeneric)
 	// Off "message" | "end", EventHandler
 	Off(string, EventHandler)
-	OffGeneric(string, EventHandlerGeneric)
 }
 
 type ClientConfig struct {
@@ -141,6 +141,6 @@ func (c *Client) Off(event string, cb EventHandler) {
 	c.bus.Unsubscribe(event, cb)
 }
 
-func (c *Client) OffGeneric(event string, cb EventHandlerGeneric) {
-	c.bus.Unsubscribe(event, cb)
+func (c *Client) OnGeneric(event string, cb EventHandlerGeneric) {
+	c.bus.Subscribe(event, cb)
 }
