@@ -14,10 +14,11 @@ type IClient interface {
 	Connect() error
 	Disconnect()
 	SendMessage(m []byte) error
-	// "message" | "end", EventHandler
+	// On "message" | "end", EventHandler
 	On(string, EventHandler)
-	// "message" | "end", EventHandler
+	// Off "message" | "end", EventHandler
 	Off(string, EventHandler)
+	OffGeneric(string, EventHandlerGeneric)
 }
 
 type ClientConfig struct {
@@ -41,6 +42,8 @@ type Client struct {
 }
 
 type EventHandler func([]byte)
+
+type EventHandlerGeneric func(interface{})
 
 func NewClient(config ClientConfig) IClient {
 	client := &Client{
@@ -135,5 +138,9 @@ func (c *Client) On(event string, cb EventHandler) {
 }
 
 func (c *Client) Off(event string, cb EventHandler) {
+	c.bus.Unsubscribe(event, cb)
+}
+
+func (c *Client) OffGeneric(event string, cb EventHandlerGeneric) {
 	c.bus.Unsubscribe(event, cb)
 }
