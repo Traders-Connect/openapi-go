@@ -19,6 +19,7 @@ type IClient interface {
 	OnGeneric(string, EventHandlerGeneric)
 	// Off "message" | "end", EventHandler
 	Off(string, EventHandler)
+	IsConnected() bool
 }
 
 type ClientConfig struct {
@@ -125,7 +126,7 @@ func (c *Client) readMessages() {
 }
 
 func (c *Client) sendHearBeats() {
-	for range time.Tick(time.Second * 30) {
+	for range time.Tick(time.Second * 10) {
 		if c.connected {
 			// A shortcut for &model.ProtoHeartbeatEvent{}
 			c.SendMessage([]byte{8, 51, 18, 0})
@@ -143,4 +144,9 @@ func (c *Client) Off(event string, cb EventHandler) {
 
 func (c *Client) OnGeneric(event string, cb EventHandlerGeneric) {
 	c.bus.Subscribe(event, cb)
+}
+
+// IsConnected returns if the client is connected or not
+func (c *Client) IsConnected() bool {
+	return c.connected
 }
